@@ -10,9 +10,9 @@
   ;;; Jar Output
   ;; Name of the jar file produced. Will be placed inside :target-path.
   ;; Including %s will splice the project version into the filename.
-  :jar-name "api-qonvo-standalone.jar"
+  :jar-name "api-qonvo-%s.jar"
   ;; As above, but for uberjar.
-  :uberjar-name "api-qonvo-%s.jar"
+  :uberjar-name "api-qonvo-standalone.jar"
   :main ^:skip-aot app.main
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]

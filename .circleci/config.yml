@@ -33,8 +33,8 @@ jobs:
           name: Docker Build
           command: |
             docker build . \
-              --tag success \
-              --tag registry.digitalocean.com/obax/success:latest
+              --tag registry.digitalocean.com/obax/$CIRCLE_PROJECT_REPONAME:latest \
+              --tag registry.digitalocean.com/obax/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BUILD_NUM \
       - run: &docker-login
           name: Docker Login
           command: |
@@ -43,7 +43,7 @@ jobs:
               --username $DOCKER_REGISTRY_TOKEN
       - run:
           name: Docker Push
-          command: docker image push registry.digitalocean.com/obax/success:latest
+          command: docker image push registry.digitalocean.com/obax/$CIRCLE_PROJECT_REPONAME:latest
       # - run:
       #     name: Docker Run
       #     command: docker run success
