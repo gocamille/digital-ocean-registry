@@ -9,17 +9,15 @@ executors:
 
 jobs:
   build-image:
-    working_directory: ~/project
+    working_directory: ~/project/app
     executor: cci-clojure
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - restore_cache:
          keys:
            - m2-{{ checksum "project.clj" }}
            - m2-
-      - run:
-          name: Change dir
-          command: cd app
       - run:
           name: lein deps
           command: lein deps
