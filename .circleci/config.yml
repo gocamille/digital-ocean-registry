@@ -8,7 +8,7 @@ executors:
 # TODO: Add ways to save build cache
 
 jobs:
-  build-jar:
+  build-image:
     working_directory: ~/project
     executor: cci-clojure
     steps:
@@ -19,6 +19,7 @@ jobs:
            - m2-
       - run:
           name: lein deps
+          command: lein deps
       - save_cache:
           key: m2-{{ checksum "project.clj" }}
           paths:
@@ -57,15 +58,14 @@ jobs:
 workflows:
   build-deploy:
     jobs:
-      - build-jar
       - build-image:
           filters:
             branches:
               only: main
-          requires:
-            - build-jar
+          # requires:
+          #   - build-jar
             # tags:
             #   only: \d*
       - pull_image:
           requires:
-            - build
+            - build-image
