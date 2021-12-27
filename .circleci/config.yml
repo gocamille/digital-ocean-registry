@@ -3,7 +3,7 @@ version: 2.1
 executors:
   cci-clojure:
     docker:
-      - image: cimg/clojure
+      - image: cimg/clojure:1.10.1
 
 # TODO: Add ways to save build cache
 
@@ -46,7 +46,7 @@ jobs:
       #     name: Docker Run
       #     command: docker run success
 
-  pull_image:
+  pull-image:
     machine: true
     steps:
       - run:
@@ -66,6 +66,6 @@ workflows:
           #   - build-jar
             # tags:
             #   only: \d*
-      - pull_image:
+      - pull-image:
           requires:
             - build-image
