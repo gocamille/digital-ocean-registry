@@ -3,7 +3,7 @@ version: 2.1
 executors:
   clojure:
     docker:
-      - image: clojure
+      - image: cimg/clojure
 
 jobs:
   build:
