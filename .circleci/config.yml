@@ -7,10 +7,10 @@ version: 2.1
 
 jobs:
   build:
-    docker:
-      - image: docker
+    machine: true
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Docker Build
           command: docker build . -t example -t latest
