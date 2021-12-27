@@ -1,5 +1,7 @@
 version: 2.1
 
+# TODO: Add ways to save build cache
+
 jobs:
   build:
     machine: true
@@ -36,7 +38,12 @@ jobs:
 workflows:
   build-deploy:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only: main
+            tags:
+              only: "*"
       - pull_image:
           requires:
             - build
