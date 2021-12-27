@@ -42,8 +42,8 @@ workflows:
           filters:
             branches:
               only: main
-            tags:
-              only: \d*
+            # tags:
+            #   only: \d*
       - pull_image:
           requires:
             - build
