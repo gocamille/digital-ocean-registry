@@ -1,19 +1,20 @@
 version: 2.1
 
+# TODO: Add ways to save build cache
+
 executors:
   cci-clojure:
     docker:
       - image: cimg/clojure:1.10.1
 
-# TODO: Add ways to save build cache
+environment:
+  DOCKER_REGISTRY_HOST: registry.digitalocean.com
+  DOCKER_REGISTRY_USER: obax
 
 jobs:
   build-image:
     working_directory: ~/project/app
     executor: cci-clojure
-    environment:
-      DOCKER_REGISTRY_HOST: registry.digitalocean.com
-      DOCKER_REGISTRY_USER: obax
     steps:
       - checkout:
           path: ~/project
@@ -44,9 +45,13 @@ jobs:
             docker login registry.digitalocean.com \
               --password $DOCKER_REGISTRY_TOKEN \
               --username $DOCKER_REGISTRY_TOKEN
+
+      # The fallback exists only because older versions of push command do not accept --all-tags
       - run:
           name: Docker Push
-          command: docker image push --all-tags $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:latest
+          command: |
+            docker image push --all-tags $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:latest ; \
+            docker image push $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:latest
 
   pull-image:
     machine: true
@@ -55,7 +60,7 @@ jobs:
           <<: *docker-login
       - run:
           name: Image pull
-          command: docker pull registry.digitalocean.com/obax/success:latest
+          command: docker pull $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:latest
 
 workflows:
   build-deploy:
