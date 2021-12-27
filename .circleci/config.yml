@@ -12,13 +12,19 @@ jobs:
       - checkout
       - run:
           name: Docker Build
-          command: docker build . -t example -t latest
+          command: |
+            docker build . \
+              --tag success \
+              --tag registry.digitalocean.com/obax/success:latest
       - run:
           name: Docker Login
           command: |
             docker login registry.digitalocean.com \
               --password $DOCKER_REGISTRY_TOKEN \
               --username $DOCKER_REGISTRY_TOKEN
+      - run:
+          name: Docker Push
+          command: docker image push registry.digitalocean.com/obax/success:latest
       - run:
           name: Docker Run
           command: docker run example
