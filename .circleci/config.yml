@@ -11,6 +11,9 @@ jobs:
   build-image:
     working_directory: ~/project/app
     executor: cci-clojure
+    environment:
+      DOCKER_REGISTRY_HOST: registry.digitalocean.com
+      DOCKER_REGISTRY_USER: obax
     steps:
       - checkout:
           path: ~/project
@@ -33,8 +36,8 @@ jobs:
           name: Docker Build
           command: |
             docker build . \
-              --tag registry.digitalocean.com/obax/$CIRCLE_PROJECT_REPONAME:latest \
-              --tag registry.digitalocean.com/obax/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BUILD_NUM \
+              --tag $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:latest \
+              --tag $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BUILD_NUM \
       - run: &docker-login
           name: Docker Login
           command: |
@@ -43,10 +46,7 @@ jobs:
               --username $DOCKER_REGISTRY_TOKEN
       - run:
           name: Docker Push
-          command: docker image push registry.digitalocean.com/obax/$CIRCLE_PROJECT_REPONAME:latest
-      # - run:
-      #     name: Docker Run
-      #     command: docker run success
+          command: docker image push --all-tags $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:latest
 
   pull-image:
     machine: true
