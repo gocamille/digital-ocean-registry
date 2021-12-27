@@ -22,7 +22,7 @@ jobs:
           command: docker image push registry.digitalocean.com/obax/success:latest
       - run:
           name: Docker Run
-          command: docker run example
+          command: docker run success
 
   pull_image:
     machine: true
