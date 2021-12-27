@@ -43,7 +43,7 @@ workflows:
             branches:
               only: main
             tags:
-              only: "*"
+              only: \d*
       - pull_image:
           requires:
             - build
