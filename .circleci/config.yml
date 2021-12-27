@@ -1,0 +1,28 @@
+version: 2.1
+
+executors:
+  clojure:
+    docker:
+      - image: clojure
+
+jobs:
+  build:
+    executor: clojure
+    steps:
+      - checkout
+      - run:
+          name: Docker Build
+          command: docker build . -t example -t latest
+      - run:
+          name: Docker Login
+          command: docker login registry.digitalocean.com \
+            --password $DOCKER_REGISTRY_TOKEN \
+            --username $DOCKER_REGISTRY_TOKEN
+      - run:
+          name: Docker Run
+          command: docker run example
+
+workflows:
+  build-deploy:
+    jobs:
+      - build
