@@ -1,14 +1,14 @@
 version: 2.1
 
-executors:
-  clojure:
-    docker:
-      - image: cimg/clojure
+# executors:
+#   clojure:
+#     docker:
+#       - image: cimg/clojure
 
 jobs:
   build:
     docker:
-      - image: cimg/clojure
+      - image: docker
     steps:
       - checkout
       - run:
