@@ -1,12 +1,31 @@
 version: 2.1
 
+executors:
+  cci-clojure:
+    docker:
+      - image: cimg/clojure
+
 # TODO: Add ways to save build cache
 
 jobs:
-  build:
-    machine: true
+  build-jar:
+    working_directory: ~/project
+    executor: cci-clojure
     steps:
       - checkout
+      - restore_cache:
+         keys:
+           - m2-{{ checksum "project.clj" }}
+           - m2-
+      - run:
+          name: lein deps
+      - save_cache:
+          key: m2-{{ checksum "project.clj" }}
+          paths:
+            - ~/.m2/repository
+      - run:
+          name: Lein build uberjar
+          command: lein uberjar
       - run:
           name: Docker Build
           command: |
@@ -22,9 +41,9 @@ jobs:
       - run:
           name: Docker Push
           command: docker image push registry.digitalocean.com/obax/success:latest
-      - run:
-          name: Docker Run
-          command: docker run success
+      # - run:
+      #     name: Docker Run
+      #     command: docker run success
 
   pull_image:
     machine: true
@@ -38,10 +57,13 @@ jobs:
 workflows:
   build-deploy:
     jobs:
-      - build:
+      - build-jar
+      - build-image:
           filters:
             branches:
               only: main
+          requires:
+            - build-jar
             # tags:
             #   only: \d*
       - pull_image:

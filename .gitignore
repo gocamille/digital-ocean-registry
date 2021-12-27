@@ -1,1 +1,4 @@
 token
+.clj-kondo
+.lsp
+lein-*
