@@ -15,9 +15,7 @@ jobs:
           command: docker build . -t example -t latest
       - run:
           name: Docker Login
-          command: docker login registry.digitalocean.com \
-            --password $DOCKER_REGISTRY_TOKEN \
-            --username $DOCKER_REGISTRY_TOKEN
+          command: docker login registry.digitalocean.com --password $DOCKER_REGISTRY_TOKEN --username $DOCKER_REGISTRY_TOKEN
       - run:
           name: Docker Run
           command: docker run example
