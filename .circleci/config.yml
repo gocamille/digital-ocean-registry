@@ -7,12 +7,11 @@ executors:
     docker:
       - image: cimg/clojure:1.10.1
 
-environment:
-  DOCKER_REGISTRY_HOST: registry.digitalocean.com
-  DOCKER_REGISTRY_USER: obax
-
 jobs:
   build-image:
+    environment:
+      DOCKER_REGISTRY_HOST: registry.digitalocean.com
+      DOCKER_REGISTRY_USER: obax
     working_directory: ~/project/app
     executor: cci-clojure
     steps:
@@ -55,6 +54,9 @@ jobs:
 
   pull-image:
     machine: true
+    environment:
+      DOCKER_REGISTRY_HOST: registry.digitalocean.com
+      DOCKER_REGISTRY_USER: obax
     steps:
       - run:
           <<: *docker-login
