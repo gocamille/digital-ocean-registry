@@ -1,10 +1,5 @@
 version: 2.1
 
-# executors:
-#   clojure:
-#     docker:
-#       - image: cimg/clojure
-
 jobs:
   build:
     machine: true
@@ -29,7 +24,21 @@ jobs:
           name: Docker Run
           command: docker run example
 
+  pull_image:
+    machine: true
+    steps:
+      - run:
+          name: Docker Login
+          command: |
+            docker login registry.digitalocean.com \
+              --password $DOCKER_REGISTRY_TOKEN \
+              --username $DOCKER_REGISTRY_TOKEN
+      - run:
+          name: Image pull
+          command: docker pull registry.digitalocean.com/obax/success:latest
+
 workflows:
   build-deploy:
     jobs:
       - build
+      - pull_image
