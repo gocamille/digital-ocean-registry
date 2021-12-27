@@ -41,4 +41,6 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - pull_image
+      - pull_image:
+          requires:
+            - build
