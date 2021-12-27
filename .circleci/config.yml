@@ -11,7 +11,7 @@ jobs:
             docker build . \
               --tag success \
               --tag registry.digitalocean.com/obax/success:latest
-      - run:
+      - run: &docker-login
           name: Docker Login
           command: |
             docker login registry.digitalocean.com \
@@ -28,11 +28,7 @@ jobs:
     machine: true
     steps:
       - run:
-          name: Docker Login
-          command: |
-            docker login registry.digitalocean.com \
-              --password $DOCKER_REGISTRY_TOKEN \
-              --username $DOCKER_REGISTRY_TOKEN
+          <<: *docker-login
       - run:
           name: Image pull
           command: docker pull registry.digitalocean.com/obax/success:latest
