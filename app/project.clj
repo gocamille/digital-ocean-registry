@@ -5,8 +5,10 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [duct/core "0.8.0"]
                  [duct/module.logging "0.5.0"]
-                 [duct/module.web "0.7.3"]]
-  :plugins [[duct/lein-duct "0.12.3"]]
+                 [duct/module.web "0.7.3"]
+                 [environ "1.2.0"]]
+  :plugins [[duct/lein-duct "0.12.3"]
+            [lein-environ "1.2.0"]]
   ;;; Jar Output
   ;; Name of the jar file produced. Will be placed inside :target-path.
   ;; Including %s will splice the project version into the filename.
