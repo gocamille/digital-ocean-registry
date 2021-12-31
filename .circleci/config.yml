@@ -49,7 +49,8 @@ jobs:
       - run:
           name: Docker Push
           command: |
-            docker image push $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:latest
+            docker image push $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:latest \
+            docker image push $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_USER/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BUILD_NUM
 
   pull-image:
     machine: true
